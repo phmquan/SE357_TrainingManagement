@@ -1,4 +1,4 @@
 package vn.uit.trainingmanagement.domain;
 
-public class RoleType {
+public class Reply {
 }
