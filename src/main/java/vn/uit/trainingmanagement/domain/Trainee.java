@@ -26,7 +26,6 @@ public class Trainee {
     @ManyToOne
     @JoinColumn(name = "trainer_id")
     private Trainer trainer;
-    private String membership;
 
     public long getId() {
         return id;
@@ -52,11 +51,4 @@ public class Trainee {
         this.trainer = trainer;
     }
 
-    public String getMembership() {
-        return membership;
-    }
-
-    public void setMembership(String membership) {
-        this.membership = membership;
-    }
 }

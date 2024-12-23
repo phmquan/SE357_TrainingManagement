@@ -27,4 +27,8 @@ public class TrainerService {
     public Trainer getTrainerById(long id) {
         return this.trainerRepository.findById(id).isPresent() ? this.trainerRepository.findById(id).get() : null;
     }
+
+    public void deleteTrainerById(Long id) {
+        this.trainerRepository.deleteById(id);
+    }
 }

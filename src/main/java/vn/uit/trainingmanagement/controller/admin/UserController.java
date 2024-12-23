@@ -43,19 +43,32 @@ public class UserController {
         this.traineeService = traineeService;
     }
 
+    @GetMapping("/")
+    public String getRedirectToSpecificRole(Model model, HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            String role = session.getAttribute("role").toString();
+            if (role != null) {
+                if (role.equals("ADMIN")) {
+                    return "redirect:/admin/trainer";
+                } else if (role.equals("TRAINER")) {
+                    return "redirect:/trainer";
+                } else if (role.equals("TRAINEE")) {
+                    return "redirect:/trainee";
+                }
+            }
+        }
+        return "redirect:/login";
+
+    }
+
+    public String getMethodName(@RequestParam String param) {
+        return new String();
+    }
+
     @GetMapping("/login")
     public String login(Model model) {
         return "login";
-    }
-
-    @GetMapping("/trainee")
-    public String trainee(Model model) {
-        return "trainee";
-    }
-
-    @GetMapping("/trainer")
-    public String trainer(Model model) {
-        return "trainerview";
     }
 
     @GetMapping("/admin/trainer")
@@ -98,7 +111,7 @@ public class UserController {
             System.out.println(error.getField() + " " + error.getDefaultMessage());
         }
         if (bindingResult.hasErrors()) {
-            return "admin/trainer/create";
+            return "admin/createTrainer";
         }
 
         String hashedPassword = this.passwordEncoder.encode(trainer.getUser().getPassword());
@@ -142,7 +155,7 @@ public class UserController {
         trainee.getUser().setRole(role);
         this.userService.handleSaveUser(trainee.getUser());
         trainee.setUser(trainee.getUser());
-        trainee.setMembership(trainee.getMembership());
+
         this.traineeService.handleSaveTrainee(trainee);
         return "redirect:/admin/trainee";
     }
@@ -175,7 +188,7 @@ public class UserController {
             currentTraineeUser.setFullName(trainee.getUser().getFullName());
             currentTraineeUser.setPhone(trainee.getUser().getPhone());
             currentTraineeUser.setAddress(trainee.getUser().getAddress());
-            currentTrainee.setMembership(trainee.getMembership());
+
             this.userService.handleSaveUser(currentTraineeUser);
             currentTrainee.setUser(currentTraineeUser);
             System.out.println("after update: " + currentTrainee);
@@ -212,13 +225,33 @@ public class UserController {
             currentTraineeUser.setFullName(trainee.getUser().getFullName());
             currentTraineeUser.setPhone(trainee.getUser().getPhone());
             currentTraineeUser.setAddress(trainee.getUser().getAddress());
-            currentTrainee.setMembership(trainee.getMembership());
+
             this.userService.handleSaveUser(currentTraineeUser);
             currentTrainee.setUser(currentTraineeUser);
             System.out.println("after update: " + currentTrainee);
             this.traineeService.handleSaveTrainee(currentTrainee);
         }
         return "redirect:/admin/trainer";
+    }
+
+    @GetMapping("/admin/trainer/delete/{id}")
+    public String getTrainerDelete(Model model, @PathVariable("id") Long id) {
+        model.addAttribute("trainer", new Trainer());
+        model.addAttribute("id", id);
+        return "admin/deleteTrainer";
+    }
+
+    @PostMapping("/admin/trainer/delete")
+    public String handleTrainerDelete(Model model, @ModelAttribute("trainer") Trainer trainer) {
+        Trainer currentTrainer = this.trainerService.getTrainerById(trainer.getId());
+        if (currentTrainer.getTrainee().isEmpty()) {
+            this.trainerService.deleteTrainerById(trainer.getId());
+        } else {
+            currentTrainer.setTrainee(null);
+            this.trainerService.handleSaveTrainer(currentTrainer);
+            this.trainerService.deleteTrainerById(trainer.getId());
+        }
+        return "redirect:" + "admin";
     }
 
     @GetMapping("/logout")

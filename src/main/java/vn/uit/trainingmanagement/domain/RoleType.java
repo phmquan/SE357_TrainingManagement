@@ -1,4 +1,5 @@
 package vn.uit.trainingmanagement.domain;
 
-public class RoleType {
+public enum RoleType {
+    ADMIN,TRAINER,TRAINEE
 }

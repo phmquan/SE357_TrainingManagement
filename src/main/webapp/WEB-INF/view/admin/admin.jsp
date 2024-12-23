@@ -78,7 +78,7 @@
                             <h5>Admin Dashboard</h5>
                             <ul class="nav flex-column mt-4">
                                 <li class="nav-item">
-                                    <a class="nav-link " href="#">Trainers</a>
+                                    <a class="nav-link " href="">Trainers</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="/admin/trainee">Trainees</a>

@@ -104,7 +104,6 @@
                                             <th scope="col">Email</th>
                                             <th scope="col">Phone number</th>
                                             <th scope="col">Assigned trainer</th>
-                                            <th scope="col">Membership Status</th>
                                             <th scope="col">Actions</th>
                                         </tr>
                                     </thead>
@@ -118,16 +117,7 @@
                                                 <td>
                                                     ${trainee.trainer.user.fullName}
                                                 </td>
-                                                <td>
-                                                    <c:choose>
-                                                        <c:when test="${trainee.membership eq 'Basic'}">
-                                                            <span class="badge bg-success">Basic</span>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <span class="badge bg-warning">Premium</span>
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </td>
+
                                                 <td class="table-actions">
                                                     <a href="/admin/trainee/update/${trainee.id}"
                                                         class="btn btn-sm btn-primary">Edit</a>

@@ -1,13 +1,26 @@
 package vn.uit.trainingmanagement.domain;
 
-import jakarta.persistence.*;
-
 import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 
+import jakarta.validation.constraints.NotBlank;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+
 @Entity
-@Table(name="schedule")
+@Table(name = "schedule")
 public class Schedule {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -21,10 +34,17 @@ public class Schedule {
     private Instant updateAt;
 
     @ManyToOne
-    @JoinColumn(name="trainee_id")
+    @JoinColumn(name = "trainee_id")
     private Trainee trainee;
 
-    @OneToMany(mappedBy="schedule")
+    @NotBlank(message = "date training is mandatory")
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    @Column(name = "date")
+    private Date date;
+    @NotBlank(message = "training time is mandatory")
+    private String trainingTime;
+
+    @OneToMany(mappedBy = "schedule")
     private List<ScheduleDetail> scheduleDetails;
 
     public long getId() {

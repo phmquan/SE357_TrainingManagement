@@ -27,4 +27,5 @@ public class TraineeService {
     public Trainee getTraineeById(long id) {
         return this.traineeRepository.findById(id).isPresent() ? this.traineeRepository.findById(id).get() : null;
     }
+
 }

@@ -1,19 +1,25 @@
 package vn.uit.trainingmanagement.domain;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.util.List;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
-@Table(name="exercise")
+@Table(name = "exercise")
 public class Exercise {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @NotBlank(message = "Title is mandatory")
     private String title;
+    @NotBlank(message = "Description is mandatory")
     @Column(columnDefinition = "MEDIUMTEXT")
     private String description;
     private List<String> image;
